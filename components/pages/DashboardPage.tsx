@@ -29,7 +29,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Stat cards */}
-            <div className={`grid gap-4 ${isAdmin ? "grid-cols-4" : "grid-cols-3"}`}>
+            <div className={`grid gap-4 ${isAdmin ? "grid-cols-4 pt-8" : "grid-cols-3 pt-8"}`}>
                 {/* Total Links */}
                 <Surface className="rounded-3xl p-6" variant="default">
                     <div className="flex flex-col gap-1">
