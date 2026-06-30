@@ -1,0 +1,1 @@
+ALTER TABLE "Release" RENAME COLUMN "slug" TO "identifier";
