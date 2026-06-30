@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode;
 }>) {
-  return (
-      <html lang="en" className={ArchivoFont.className}>
-      <body className={ArchivoFont.className}>
-      <Providers>{children}</Providers>
-      </body>
-      </html>
-  );
+    return (
+        <html lang="en" className={ArchivoFont.className} style={{ colorScheme: "light" }}>
+        <body className={ArchivoFont.className}>
+        <Providers>{children}</Providers>
+        </body>
+        </html>
+    );
 }
