@@ -32,9 +32,9 @@ export default function SettingsPage() {
 
     return (
         <div className="flex flex-col gap-8">
-            <div>
+            <div className="gap-2">
                 <h1 className="text-4xl font-bold">Settings</h1>
-                <p className="text-zinc-500 text-sm">Manage your account.</p>
+                <p>Manage your account.</p>
             </div>
 
             <div className="flex gap-4">

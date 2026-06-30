@@ -22,10 +22,10 @@ export default function DashboardPage() {
     }, [])
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className="gap-2">
             <div>
                 <h1 className="text-4xl font-bold">Dashboard</h1>
-                <p className="text-zinc-500 text-sm">Overview of your releases and activity.</p>
+                <p>Overview of releases and activity.</p>
             </div>
 
             {/* Stat cards */}

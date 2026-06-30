@@ -76,15 +76,16 @@ export default function AccessPage() {
 
     return (
         <div className="flex flex-col gap-8">
-            <div>
+            <div className="gap-2">
                 <h1 className="text-4xl font-bold">Access</h1>
-                <p className="text-zinc-500 text-sm">Manage who can access the admin console.</p>
+                <p>Manage user permissions.</p>
             </div>
 
             {/* Pending */}
             <div className="flex flex-col gap-3">
                 <h2 className="text-xs uppercase tracking-widest text-zinc-400 font-semibold">
-                    Pending Requests {pending.length > 0 && <span className="ml-2 bg-amber-100 text-amber-600 rounded-full px-2 py-0.5">{pending.length}</span>}
+                    Pending Requests {pending.length > 0 &&
+                    <span className="ml-2 bg-amber-100 text-amber-600 rounded-full px-2 py-0.5">{pending.length}</span>}
                 </h2>
                 <Surface className="w-full h-fit rounded-3xl overflow-hidden" variant="default">
                     <table className="w-full">
@@ -98,18 +99,23 @@ export default function AccessPage() {
                         </thead>
                         <tbody>
                         {loading ? (
-                            <SkeletonRows cols={4} />
+                            <SkeletonRows cols={4}/>
                         ) : pending.length === 0 ? (
-                            <tr><td colSpan={4} className="px-4 py-6 text-center text-sm text-zinc-400">No pending requests.</td></tr>
+                            <tr>
+                                <td colSpan={4} className="px-4 py-6 text-center text-sm text-zinc-400">No pending
+                                    requests.
+                                </td>
+                            </tr>
                         ) : (
                             pending.map(user => (
                                 <tr key={user.id} className="border-b border-zinc-100">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
                                             {user.image ? (
-                                                <img src={user.image} className="w-7 h-7 rounded-full" alt="" />
+                                                <img src={user.image} className="w-7 h-7 rounded-full" alt=""/>
                                             ) : (
-                                                <div className="w-7 h-7 rounded-full bg-zinc-200 flex items-center justify-center text-xs">
+                                                <div
+                                                    className="w-7 h-7 rounded-full bg-zinc-200 flex items-center justify-center text-xs">
                                                     {user.name?.[0]}
                                                 </div>
                                             )}
@@ -120,10 +126,12 @@ export default function AccessPage() {
                                     <td className="px-4 py-3 text-sm text-zinc-500">{new Date(user.createdAt).toLocaleDateString()}</td>
                                     <td className="px-4 py-3">
                                         <div className="flex gap-2">
-                                            <Button size="sm" variant="secondary" onClick={() => updateUser(user.id, { status: "approved" })}>
+                                            <Button size="sm" variant="secondary"
+                                                    onClick={() => updateUser(user.id, {status: "approved"})}>
                                                 Approve
                                             </Button>
-                                            <Button size="sm" variant="danger" onClick={() => updateUser(user.id, { status: "denied" })}>
+                                            <Button size="sm" variant="danger"
+                                                    onClick={() => updateUser(user.id, {status: "denied"})}>
                                                 Deny
                                             </Button>
                                         </div>
@@ -151,18 +159,23 @@ export default function AccessPage() {
                         </thead>
                         <tbody>
                         {loading ? (
-                            <SkeletonRows cols={4} />
+                            <SkeletonRows cols={4}/>
                         ) : approved.length === 0 ? (
-                            <tr><td colSpan={4} className="px-4 py-6 text-center text-sm text-zinc-400">No approved users.</td></tr>
+                            <tr>
+                                <td colSpan={4} className="px-4 py-6 text-center text-sm text-zinc-400">No approved
+                                    users.
+                                </td>
+                            </tr>
                         ) : (
                             approved.map(user => (
                                 <tr key={user.id} className="border-b border-zinc-100">
                                     <td className="px-4 py-3">
                                         <div className="flex items-center gap-2">
                                             {user.image ? (
-                                                <img src={user.image} className="w-7 h-7 rounded-full" alt="" />
+                                                <img src={user.image} className="w-7 h-7 rounded-full" alt=""/>
                                             ) : (
-                                                <div className="w-7 h-7 rounded-full bg-zinc-200 flex items-center justify-center text-xs">
+                                                <div
+                                                    className="w-7 h-7 rounded-full bg-zinc-200 flex items-center justify-center text-xs">
                                                     {user.name?.[0]}
                                                 </div>
                                             )}
@@ -174,10 +187,11 @@ export default function AccessPage() {
                                         <Dropdown>
                                             <Button size="sm" variant="secondary">
                                                 {user.role === "admin" ? "Admin" : "User"}
-                                                <Icon icon="lucide:chevron-down" />
+                                                <Icon icon="lucide:chevron-down"/>
                                             </Button>
                                             <Dropdown.Popover>
-                                                <Dropdown.Menu onAction={(key) => updateUser(user.id, { role: key as string })}>
+                                                <Dropdown.Menu
+                                                    onAction={(key) => updateUser(user.id, {role: key as string})}>
                                                     <Dropdown.Item id="admin" textValue="Admin">
                                                         <Label>Admin</Label>
                                                     </Dropdown.Item>
