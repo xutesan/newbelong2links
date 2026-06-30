@@ -5,7 +5,7 @@ import { Surface, Button, TextField, Input, Label } from "@heroui/react"
 import { useSession, signOut } from "next-auth/react"
 
 export default function SettingsPage() {
-    const { data: session, update } = useSession()
+    const { data: session} = useSession()
     const [name, setName] = useState(session?.user?.name || "")
     const [loading, setLoading] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)

@@ -10,7 +10,6 @@ const ArchivoBlack = Archivo_Black({ weight: "400" })
 export default function SignIn() {
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
-            {/* Left — black panel */}
             <div className="hidden md:flex md:w-1/2 bg-black items-center justify-center">
                 <h1 className="text-white text-6xl font-bold">Hello!</h1>
             </div>

@@ -22,14 +22,12 @@ export async function GET() {
     const bestLink = releases[0] || null
     const pendingUsers = users.length
 
-    // aggregate views by artist
     const artistViews: Record<string, number> = {}
     releases.forEach(r => {
         artistViews[r.artist] = (artistViews[r.artist] || 0) + r.views
     })
     const bestArtist = Object.entries(artistViews).sort((a, b) => b[1] - a[1])[0] || null
 
-    // group by week starting Sunday
     const weeklyViews: Record<string, number> = {}
     views.forEach(v => {
         const date = new Date(v.createdAt)

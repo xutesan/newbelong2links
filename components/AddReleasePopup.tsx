@@ -4,7 +4,7 @@ import { Modal, Button, TextField, Input, Switch } from "@heroui/react"
 import { Icon } from "@iconify/react"
 import { DatePicker, DateField, Calendar, Label } from '@heroui/react';
 import UploadArtwork from "@/components/UploadArtwork"
-import { useState, useRef } from "react"
+import { useState} from "react"
 import { useOverlayState } from "@heroui/react"
 
 interface Props {
@@ -15,7 +15,6 @@ export default function AddReleasePopup({ onSuccess }: Props) {
     const [artworkFile, setArtworkFile] = useState<File | null>(null)
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState<Record<string, string>>({})
-    const closeRef = useRef<HTMLDivElement>(null)
     const state = useOverlayState({ defaultOpen: false })
     const [form, setForm] = useState({
         title: "",
@@ -111,7 +110,6 @@ export default function AddReleasePopup({ onSuccess }: Props) {
                         </Modal.Header>
                         <Modal.Body className="pt-0 px-6 pb-6">
                             <div className="grid grid-cols-[500px_1fr] gap-12 place-content-center h-full">
-                                {/* Left — artwork */}
                                 <div className="flex flex-col gap-2">
                                     <Label>Artwork</Label>
                                     <UploadArtwork
@@ -121,7 +119,6 @@ export default function AddReleasePopup({ onSuccess }: Props) {
                                     {errors.artwork && <p className="text-xs text-red-500">{errors.artwork}</p>}
                                 </div>
 
-                                {/* Right — fields */}
                                 <div className="flex flex-col gap-4">
                                     <div className="flex flex-col gap-1">
                                         <TextField name="title" variant="secondary">

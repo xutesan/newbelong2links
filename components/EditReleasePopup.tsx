@@ -74,7 +74,6 @@ export default function EditReleasePopup({ release, onSuccess }: Props) {
                         </Modal.Header>
                         <Modal.Body className="pt-0 px-6 pb-6">
                             <div className="grid grid-cols-[500px_1fr] gap-12 place-content-center h-full">
-                                {/* Left — artwork */}
                                 <div className="flex flex-col gap-2">
                                     <Label>Artwork</Label>
                                     <div className="w-full aspect-square rounded-2xl overflow-hidden border-2 border-zinc-200">
@@ -88,7 +87,6 @@ export default function EditReleasePopup({ release, onSuccess }: Props) {
                                     </div>
                                 </div>
 
-                                {/* Right — fields */}
                                 <div className="flex flex-col gap-4">
                                     <TextField name="title" variant="secondary">
                                         <Label>Title</Label>

@@ -37,7 +37,6 @@ export default function Sidebar({ activeView, onNavigate, releaseCount = 0 }: Pr
     return (
         <aside className="flex flex-col h-screen w-70 bg-white border-r border-zinc-100 px-5 py-8 shrink-0">
 
-            {/* Logo */}
             <div className="flex items-center gap-3 px-2 mb-8">
                 <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
                     <img src="https://belong2.lon1.digitaloceanspaces.com/belong%20logo%20black(1).png" alt="belong2"
@@ -49,7 +48,7 @@ export default function Sidebar({ activeView, onNavigate, releaseCount = 0 }: Pr
                 </div>
             </div>
 
-            {/* Nav */}
+
             <nav className="flex flex-col gap-6 flex-1">
                 {NAV_SECTIONS.map(section => (
                     <div key={section.label}>
@@ -93,7 +92,6 @@ export default function Sidebar({ activeView, onNavigate, releaseCount = 0 }: Pr
                 ))}
             </nav>
 
-            {/* User */}
             <div className="flex items-center justify-between px-2 py-2 rounded-lg hover:bg-zinc-50 cursor-pointer group">
                 <div className="flex items-center gap-2">
                     {session?.user?.image ? (

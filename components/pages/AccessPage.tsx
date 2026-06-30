@@ -81,7 +81,6 @@ export default function AccessPage() {
                 <p>Manage user permissions.</p>
             </div>
 
-            {/* Pending */}
             <div className="flex flex-col gap-3">
                 <h2 className="text-xs uppercase tracking-widest text-zinc-400 font-semibold">
                     Pending Requests {pending.length > 0 &&
@@ -144,7 +143,6 @@ export default function AccessPage() {
                 </Surface>
             </div>
 
-            {/* Approved */}
             <div className="flex flex-col gap-3">
                 <h2 className="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Approved Users</h2>
                 <Surface className="w-full h-fit rounded-3xl overflow-hidden" variant="default">

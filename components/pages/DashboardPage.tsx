@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { Surface, Skeleton } from "@heroui/react"
 import { useSession } from "next-auth/react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts"
-import { Icon } from "@iconify/react"
 
 export default function DashboardPage() {
     const [stats, setStats] = useState<any>(null)
@@ -28,9 +27,7 @@ export default function DashboardPage() {
                 <p>Overview of releases and activity.</p>
             </div>
 
-            {/* Stat cards */}
             <div className={`grid gap-4 ${isAdmin ? "grid-cols-4 pt-8" : "grid-cols-3 pt-8"}`}>
-                {/* Total Links */}
                 <Surface className="rounded-3xl p-6" variant="default">
                     <div className="flex flex-col gap-1">
                         <p className="text-xs uppercase tracking-widest text-zinc-400">Total Links</p>
@@ -42,7 +39,6 @@ export default function DashboardPage() {
                     </div>
                 </Surface>
 
-                {/* Best Link */}
                 <Surface className="rounded-3xl p-6" variant="default">
                     <div className="flex flex-col gap-1">
                         <p className="text-xs uppercase tracking-widest text-zinc-400">Best Link</p>
@@ -64,7 +60,6 @@ export default function DashboardPage() {
                     </div>
                 </Surface>
 
-                {/* Best Artist */}
                 <Surface className="rounded-3xl p-6" variant="default">
                     <div className="flex flex-col gap-1">
                         <p className="text-xs uppercase tracking-widest text-zinc-400">Best Artist</p>
@@ -81,11 +76,10 @@ export default function DashboardPage() {
                     </div>
                 </Surface>
 
-                {/* Pending Users — admin only */}
                 {isAdmin && (
                     <Surface className="rounded-3xl p-6" variant="default">
                         <div className="flex flex-col gap-1">
-                            <p className="text-xs uppercase tracking-widest text-zinc-400">Pending Requests</p>
+                            <p className="text-xs uppercase tracking-widest text-zinc-400">Pending Users</p>
                             {loading ? (
                                 <Skeleton className="w-16 h-8 rounded-lg mt-1" />
                             ) : (
@@ -96,8 +90,7 @@ export default function DashboardPage() {
                 )}
             </div>
 
-            {/* Views chart */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4 pt-6">
                 <h2 className="text-xs uppercase tracking-widest text-zinc-400 font-semibold">Total Views</h2>
                 <Surface className="rounded-3xl p-6" variant="default">
                     {loading ? (

@@ -6,7 +6,6 @@ import { faSoundcloud, faSpotify } from "@fortawesome/free-brands-svg-icons"
 import { SiApplemusic, SiYoutubemusic } from "react-icons/si"
 import Link from "next/link"
 import { Archivo_Black } from "next/font/google"
-
 const ArchivoBlack = Archivo_Black({ weight: "400" })
 
 export default function ReleasePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -24,7 +23,6 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
     return (
         <div className="h-screen overflow-hidden bg-black flex flex-col">
 
-            {/* Full bleed blurred background */}
             <div className="fixed inset-0 z-0">
                 <img
                     src={release.artwork}
@@ -35,10 +33,8 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-3xl"/>
             </div>
 
-            {/* Content */}
             <main className="relative z-10 flex flex-col items-center justify-center flex-1 px-6 py-8">
 
-                {/* Artwork */}
                 <div className="w-70 h-70 md:w-110 md:h-110 rounded-3xl overflow-hidden shadow-2xl mb-8">
                     <img
                         src={release.artwork}
@@ -47,14 +43,12 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
                     />
                 </div>
 
-                {/* Title */}
                 <div className="text-center mb-10">
                     <p className="text-white/60 text-sm uppercase tracking-widest mb-1">{release.artist}</p>
                     <h1 className="text-white text-4xl md:text-5xl font-semibold tracking-tight">{release.title}</h1>
                     <p className="text-white/40 text-xs uppercase tracking-widest mt-2">{release.identifier}</p>
                 </div>
 
-                {/* DSP Buttons */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-xs md:max-w-lg">
                     {release.spotifyLink && (
                         <button
@@ -95,7 +89,6 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
                 </div>
             </main>
 
-            {/* Footer */}
             <footer className="relative z-10 flex justify-center py-6">
                 <p className={`${ArchivoBlack.className} text-white/30 text-xs`}>
                     <Link href="https://belong2.club" className="hover:text-white/60 transition-colors">belong²</Link>
