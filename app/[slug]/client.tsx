@@ -20,6 +20,17 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
 
     if (!release) return null
 
+    const validLinks = [
+        release.spotifyLink,
+        release.appleLink,
+        release.soundcloudLink,
+        release.youtubeLink,
+    ].filter(Boolean).length
+
+    const gridClass = validLinks === 1
+        ? "flex justify-center w-full max-w-xs"
+        : "grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-xs md:max-w-lg"
+
     return (
         <div className="h-screen overflow-hidden bg-black flex flex-col">
 
@@ -49,7 +60,7 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
                     <p className="text-white/40 text-xs uppercase tracking-widest mt-2">{release.identifier}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-xs md:max-w-lg">
+                <div className={gridClass}>
                     {release.spotifyLink && (
                         <button
                             onClick={() => window.open(release.spotifyLink, "_blank")}
