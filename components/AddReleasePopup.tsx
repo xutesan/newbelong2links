@@ -41,10 +41,6 @@ export default function AddReleasePopup({ onSuccess }: Props) {
         if (!form.identifier) newErrors.identifier = "Identifier is required"
         if (!form.linkName) newErrors.linkName = "Link name is required"
         if (!form.releaseDate) newErrors.releaseDate = "Release date is required"
-        if (!form.spotifyLink) newErrors.spotifyLink = "Spotify link is required"
-        if (!form.appleLink) newErrors.appleLink = "Apple Music link is required"
-        if (!form.soundcloudLink) newErrors.soundcloudLink = "SoundCloud link is required"
-        if (!form.youtubeLink) newErrors.youtubeLink = "YouTube link is required"
         if (!artworkFile) newErrors.artwork = "Artwork is required"
         setErrors(newErrors)
         return Object.keys(newErrors).length === 0
