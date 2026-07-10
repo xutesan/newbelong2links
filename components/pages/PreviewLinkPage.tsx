@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from "react"
-import { Button, Dropdown, Label, Modal, Chip, SearchField, Table, Spinner, EmptyState } from "@heroui/react"
+import { Button, Dropdown, Label, Chip, SearchField, Table, Spinner, EmptyState, AlertDialog, Skeleton } from "@heroui/react"
 import { Icon } from "@iconify/react"
 import { useSession } from "next-auth/react"
 import UploadTrackPopup from "@/components/UploadTrackPopup"
@@ -119,85 +119,123 @@ export default function PreviewLinksPage() {
                 </SearchField>
                 <UploadTrackPopup onSuccess={refetch}/>
             </div>
-
             <div className="flex pt-4">
-                <Table>
-                    <Table.ScrollContainer className="max-h-[600px] overflow-y-auto">
-                        <Table.Content aria-label="Preview tracks" className="min-w-[900px]">
-                            <Table.Header className="sticky top-0 z-10 bg-surface-secondary">
-                                <Table.Column isRowHeader className="w-64 text-lg text-zinc-600 font-bold">Track</Table.Column>
-                                <Table.Column className="w-48 text-lg text-zinc-600 font-bold">Artist</Table.Column>
-                                <Table.Column className="w-24 text-lg text-zinc-600 font-bold">Duration</Table.Column>
-                                <Table.Column className="w-20 text-lg text-zinc-600 font-bold">Links</Table.Column>
-                                <Table.Column className="w-1 text-lg text-zinc-600 font-bold">Status</Table.Column>
-                                <Table.Column className="w-1 text-end text-lg text-zinc-600 font-bold">Actions</Table.Column>
-                            </Table.Header>
-                            <Table.Body
-                                renderEmptyState={() => (
-                                    <EmptyState className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
-                                        <Icon className="size-6 text-muted" icon="gravity-ui:tray" />
-                                        <span className="text-sm text-muted">No results found</span>
-                                    </EmptyState>
-                                )}
-                            >
-                                <Table.Collection items={visibleTracks}>
-                                    {(track) => (
-                                        <Table.Row id={track.id}>
-                                            <Table.Cell className="text-sm font-medium text-foreground">{track.title}</Table.Cell>
-                                            <Table.Cell className="text-sm text-zinc-500">{track.artist}</Table.Cell>
-                                            <Table.Cell className="text-sm text-zinc-500">{formatDuration(track.duration)}</Table.Cell>
-                                            <Table.Cell className="text-sm text-zinc-500">{track.links?.length || 0}</Table.Cell>
-                                            <Table.Cell>
-                                                <Chip color={isTrackActive(track) ? "success" : "danger"} variant="soft" size="sm">
-                                                    <Chip.Label>{isTrackActive(track) ? "Active" : "Inactive"}</Chip.Label>
-                                                </Chip>
-                                            </Table.Cell>
-                                            <Table.Cell className="text-end">
-                                                <div className="flex justify-end">
-                                                    <Dropdown>
-                                                        <Button isIconOnly aria-label="Menu" variant="secondary">
-                                                            <Icon icon="lucide:ellipsis-vertical" className="outline-none"/>
-                                                        </Button>
-                                                        <Dropdown.Popover>
-                                                            <Dropdown.Menu onAction={(key) => {
-                                                                if (key === "generate-link") {
-                                                                    document.getElementById(`generate-${track.id}`)?.click()
-                                                                }
-                                                                if (key === "view-links") {
-                                                                    document.getElementById(`view-links-${track.id}`)?.click()
-                                                                }
-                                                                if (key === "delete-track") {
-                                                                    setDeleteTarget(track)
-                                                                }
-                                                            }}>
-                                                                <Dropdown.Item id="generate-link" textValue="Generate Link">
-                                                                    <Label>Generate Link</Label>
-                                                                </Dropdown.Item>
-                                                                <Dropdown.Item id="view-links" textValue="View Links">
-                                                                    <Label>View Links ({track.links?.length || 0})</Label>
-                                                                </Dropdown.Item>
-                                                                <Dropdown.Item id="delete-track" textValue="Delete Track" variant="danger">
-                                                                    <Label>Delete Track</Label>
-                                                                </Dropdown.Item>
-                                                            </Dropdown.Menu>
-                                                        </Dropdown.Popover>
-                                                    </Dropdown>
-                                                </div>
-                                            </Table.Cell>
-                                        </Table.Row>
+                {loading ? (
+                    <div className="w-full rounded-2xl border border-zinc-200 overflow-hidden">
+                        <div className="bg-surface-secondary px-4 py-3 flex gap-6">
+                            <div className="w-64"><Skeleton className="w-24 h-3 rounded"/></div>
+                            <div className="w-48"><Skeleton className="w-16 h-3 rounded"/></div>
+                            <div className="w-24"><Skeleton className="w-14 h-3 rounded"/></div>
+                            <div className="w-20"><Skeleton className="w-10 h-3 rounded"/></div>
+                            <div className="flex-1"><Skeleton className="w-14 h-3 rounded"/></div>
+                            <div className="w-16"><Skeleton className="w-14 h-3 rounded"/></div>
+                        </div>
+                        {Array.from({length: 4}).map((_, i) => (
+                            <div key={i} className="px-4 py-3 flex items-center gap-6 border-t border-zinc-100">
+                                <div className="w-64"><Skeleton className="w-32 h-4 rounded-lg"/></div>
+                                <div className="w-48"><Skeleton className="w-24 h-4 rounded-lg"/></div>
+                                <div className="w-24"><Skeleton className="w-12 h-4 rounded-lg"/></div>
+                                <div className="w-20"><Skeleton className="w-8 h-4 rounded-lg"/></div>
+                                <div className="flex-1"><Skeleton className="w-16 h-6 rounded-full"/></div>
+                                <div className="w-16 flex justify-end"><Skeleton className="w-8 h-8 rounded-lg"/></div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <Table>
+                        <Table.ScrollContainer className="max-h-[600px] overflow-y-auto">
+                            <Table.Content aria-label="Preview tracks" className="min-w-[900px]">
+                                <Table.Header className="sticky top-0 z-10 bg-surface-secondary">
+                                    <Table.Column isRowHeader
+                                                  className="w-64 text-lg text-zinc-600 font-bold">Track</Table.Column>
+                                    <Table.Column className="w-48 text-lg text-zinc-600 font-bold">Artist</Table.Column>
+                                    <Table.Column
+                                        className="w-24 text-lg text-zinc-600 font-bold">Duration</Table.Column>
+                                    <Table.Column className="w-20 text-lg text-zinc-600 font-bold">Links</Table.Column>
+                                    <Table.Column className="w-1 text-lg text-zinc-600 font-bold">Status</Table.Column>
+                                    <Table.Column
+                                        className="w-1 text-end text-lg text-zinc-600 font-bold">Actions</Table.Column>
+                                </Table.Header>
+                                <Table.Body
+                                    renderEmptyState={() => (
+                                        <EmptyState
+                                            className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+                                            <Icon className="size-6 text-muted" icon="gravity-ui:tray"/>
+                                            <span className="text-sm text-muted">No results found</span>
+                                        </EmptyState>
                                     )}
-                                </Table.Collection>
-                                {hasMore && (
-                                    <Table.LoadMore isLoading={isLoadingMore} scrollOffset={0} onLoadMore={loadMore}>
-                                        <Table.LoadMoreContent>
-                                            <Spinner size="md" />
-                                        </Table.LoadMoreContent>
-                                    </Table.LoadMore>
-                                )}
-                            </Table.Body>
-                        </Table.Content>
-                    </Table.ScrollContainer>
-                </Table>
+                                >
+                                    <Table.Collection items={visibleTracks}>
+                                        {(track) => (
+                                            <Table.Row id={track.id}>
+                                                <Table.Cell
+                                                    className="text-sm font-medium text-foreground">{track.title}</Table.Cell>
+                                                <Table.Cell
+                                                    className="text-sm font-medium text-foreground text-zinc-800">{track.artist}</Table.Cell>
+                                                <Table.Cell
+                                                    className="text-sm text-zinc-500">{formatDuration(track.duration)}</Table.Cell>
+                                                <Table.Cell
+                                                    className="text-sm text-zinc-500">{track.links?.length || 0}</Table.Cell>
+                                                <Table.Cell>
+                                                    <Chip color={isTrackActive(track) ? "success" : "danger"}
+                                                          variant="soft" size="md">
+                                                        <Chip.Label>{isTrackActive(track) ? "Active" : "Inactive"}</Chip.Label>
+                                                    </Chip>
+                                                </Table.Cell>
+                                                <Table.Cell className="text-end">
+                                                    <div className="flex justify-end">
+                                                        <Dropdown>
+                                                            <Button isIconOnly aria-label="Menu" variant="secondary">
+                                                                <Icon icon="lucide:ellipsis-vertical"
+                                                                      className="outline-none"/>
+                                                            </Button>
+                                                            <Dropdown.Popover>
+                                                                <Dropdown.Menu onAction={(key) => {
+                                                                    if (key === "generate-link") {
+                                                                        document.getElementById(`generate-${track.id}`)?.click()
+                                                                    }
+                                                                    if (key === "view-links") {
+                                                                        document.getElementById(`view-links-${track.id}`)?.click()
+                                                                    }
+                                                                    if (key === "delete-track") {
+                                                                        setDeleteTarget(track)
+                                                                    }
+                                                                }}>
+                                                                    <Dropdown.Item id="generate-link"
+                                                                                   textValue="Generate Link">
+                                                                        <Label>Generate Link</Label>
+                                                                    </Dropdown.Item>
+                                                                    <Dropdown.Item id="view-links"
+                                                                                   textValue="View Links">
+                                                                        <Label>View Links
+                                                                            ({track.links?.length || 0})</Label>
+                                                                    </Dropdown.Item>
+                                                                    <Dropdown.Item id="delete-track"
+                                                                                   textValue="Delete Track"
+                                                                                   variant="danger">
+                                                                        <Label>Delete Track</Label>
+                                                                    </Dropdown.Item>
+                                                                </Dropdown.Menu>
+                                                            </Dropdown.Popover>
+                                                        </Dropdown>
+                                                    </div>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        )}
+                                    </Table.Collection>
+                                    {hasMore && (
+                                        <Table.LoadMore isLoading={isLoadingMore} scrollOffset={0}
+                                                        onLoadMore={loadMore}>
+                                            <Table.LoadMoreContent>
+                                                <Spinner size="md"/>
+                                            </Table.LoadMoreContent>
+                                        </Table.LoadMore>
+                                    )}
+                                </Table.Body>
+                            </Table.Content>
+                        </Table.ScrollContainer>
+                    </Table>
+                )}
             </div>
 
             {lastGeneratedUrl && (
@@ -241,24 +279,40 @@ export default function PreviewLinksPage() {
             ))}
 
             {deleteTarget && (
-                <Modal>
-                    <Modal.Backdrop variant="blur" isOpen={!!deleteTarget}
-                                    onOpenChange={(open) => !open && setDeleteTarget(null)}>
-                        <Modal.Container placement="auto" size="md">
-                            <Modal.Dialog>
-                                <Modal.CloseTrigger/>
-                                <Modal.Body>
-                                    <p className="text-xl text-zinc-800 mt-4">
-                                        Are you sure you want to delete <span
-                                        className="font-medium text-foreground">{deleteTarget.title}</span> by {deleteTarget.artist}?
+                <AlertDialog>
+                    <AlertDialog.Backdrop
+                        variant="blur"
+                        isOpen={!!deleteTarget}
+                        onOpenChange={(open) => !open && setDeleteTarget(null)}
+                    >
+                        <AlertDialog.Container placement="auto" size="md">
+                            <AlertDialog.Dialog>
+                                <AlertDialog.CloseTrigger/>
+                                <AlertDialog.Header>
+                                    <AlertDialog.Icon status="danger"/>
+                                    <AlertDialog.Heading>Delete Track</AlertDialog.Heading>
+                                </AlertDialog.Header>
+                                <AlertDialog.Body>
+                                    <p>
+                                        Are you sure you want to delete{" "}
+                                        <span
+                                            className="font-medium text-foreground">{deleteTarget.title}</span> by{" "}
+                                        {deleteTarget.artist}?
                                     </p>
-                                    <p className="text-sm font-semibold text-zinc-500 mt-6">
+                                    <p className="text-sm text-muted mt-2">
                                         This will permanently delete the audio file and
                                         all {deleteTarget.links?.length || 0} associated
                                         link{deleteTarget.links?.length === 1 ? "" : "s"}. This cannot be undone.
                                     </p>
-                                </Modal.Body>
-                                <Modal.Footer>
+                                </AlertDialog.Body>
+                                <AlertDialog.Footer>
+                                    <Button
+                                        variant="tertiary"
+                                        isDisabled={deleting}
+                                        onClick={() => setDeleteTarget(null)}
+                                    >
+                                        Cancel
+                                    </Button>
                                     <Button
                                         variant="danger"
                                         isDisabled={deleting}
@@ -277,11 +331,11 @@ export default function PreviewLinksPage() {
                                     >
                                         {deleting ? "Deleting..." : "Delete Track"}
                                     </Button>
-                                </Modal.Footer>
-                            </Modal.Dialog>
-                        </Modal.Container>
-                    </Modal.Backdrop>
-                </Modal>
+                                </AlertDialog.Footer>
+                            </AlertDialog.Dialog>
+                        </AlertDialog.Container>
+                    </AlertDialog.Backdrop>
+                </AlertDialog>
             )}
         </div>
     )

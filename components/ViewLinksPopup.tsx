@@ -1,6 +1,6 @@
 "use client"
 
-import { Modal, Button, useOverlayState, Chip } from "@heroui/react"
+import { Modal, Button, useOverlayState, Chip, TextField, Label, Input } from "@heroui/react"
 import { Icon } from "@iconify/react"
 import { useState } from "react"
 
@@ -92,12 +92,19 @@ export default function ViewLinksPopup({ track, onUpdated }: Props) {
                                             <div key={link.id} className="border border-zinc-200 rounded-2xl p-4">
                                                 <div className="flex items-center justify-between">
                                                     <div>
-                                                        <p className="text-sm font-medium">
+                                                        <p className="text-sm font-medium text-zinc-900">
                                                             {link.recipientName || "Public link"}
                                                         </p>
-                                                        <Chip size="sm" color={status.color} variant="soft" className="mt-2">
-                                                            <Chip.Label>{status.label}</Chip.Label>
-                                                        </Chip>
+                                                        <div className="flex items-center gap-2 mt-2">
+                                                            <Chip size="sm" color={status.color} variant="soft">
+                                                                <Chip.Label>{status.label}</Chip.Label>
+                                                            </Chip>
+                                                            {link.expiresAt && (
+                                                                <span className="text-xs text-zinc-400">
+                                                                    {status.label === "Expired" ? "Expired" : "Expires"} {new Date(link.expiresAt).toLocaleDateString()}
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <p className="text-xs text-zinc-400">
@@ -134,25 +141,28 @@ export default function ViewLinksPopup({ track, onUpdated }: Props) {
                                                 </div>
 
                                                 {isEditing && (
-                                                    <div
-                                                        className="flex items-center gap-2 mt-3 pt-3 border-t border-zinc-100">
-                                                    <input
-                                                            className="flex-1 border border-zinc-200 rounded-lg px-3 py-1.5 text-sm"
-                                                            value={recipientDraft}
-                                                            onChange={(e) => setRecipientDraft(e.target.value)}
-                                                            placeholder="Recipient name"
-                                                        />
-                                                        <Button
-                                                            size="sm"
-                                                            variant="primary"
-                                                            isDisabled={loading}
-                                                            onClick={async () => {
-                                                                await updateLink(link.id, { recipientName: recipientDraft })
-                                                                setEditingId(null)
-                                                            }}
-                                                        >
-                                                            Save
-                                                        </Button>
+                                                    <div className="mt-4 pt-4 border-t border-zinc-100">
+                                                        <div className="flex items-end gap-2 max-w-sm">
+                                                            <TextField name="recipientName" variant="secondary" className="flex-1">
+                                                                <Label>Recipient Name (Leave blank for public link)</Label>
+                                                                <Input
+                                                                    placeholder="Jane Doe"
+                                                                    value={recipientDraft}
+                                                                    onChange={(e) => setRecipientDraft(e.target.value)}
+                                                                />
+                                                            </TextField>
+                                                            <Button
+                                                                size="md"
+                                                                    variant="secondary"
+                                                                isDisabled={loading}
+                                                                onClick={async () => {
+                                                                    await updateLink(link.id, { recipientName: recipientDraft })
+                                                                    setEditingId(null)
+                                                                }}
+                                                            >
+                                                                Save
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
