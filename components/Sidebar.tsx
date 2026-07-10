@@ -18,6 +18,7 @@ const NAV_SECTIONS = [
     {
         label: "WORKSPACE",
         items: [
+            { name: "Preview Links", icon: "lucide:headphones", view: "previewLinks", adminOnly: true },
             { name: "Access", icon: "lucide:users", view: "access", adminOnly: true },
             { name: "Settings", icon: "lucide:settings", view: "settings" },
         ]

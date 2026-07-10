@@ -8,6 +8,7 @@ import ReleasesPage from "@/components/pages/ReleasesPage"
 import AnalyticsPage from "@/components/pages/AnalyticsPage"
 import AccessPage from "@/components/pages/AccessPage"
 import SettingsPage from "@/components/pages/SettingsPage"
+import PreviewLinkPage from "@/components/pages/PreviewLinkPage";
 
 export default function Admin() {
     const [activeView, setActiveView] = useState("dashboard")
@@ -54,6 +55,7 @@ export default function Admin() {
                 {activeView === "analytics" && <AnalyticsPage />}
                 {activeView === "access" && <AccessPage />}
                 {activeView === "settings" && <SettingsPage />}
+                {activeView === "previewLinks" && <PreviewLinkPage />}
             </main>
         </div>
     )
