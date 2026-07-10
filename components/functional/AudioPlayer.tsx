@@ -64,6 +64,9 @@ export default function AudioPlayer({ src }: Props) {
         }
         setIsPlaying(!isPlaying)
     }
+    type CSSPropertiesWithVars = React.CSSProperties & {
+        "--fill-percent"?: string
+    }
 
     function handleScrub(e: React.ChangeEvent<HTMLInputElement>) {
         const audio = audioRef.current
@@ -98,7 +101,7 @@ export default function AudioPlayer({ src }: Props) {
                         onChange={handleScrub}
                         aria-label="Seek"
                         className="audio-range"
-                        style={{ ["--fill-percent" as any]: `${scrubPercent}%` }}
+                        style={{ "--fill-percent": `${scrubPercent}%` } as CSSPropertiesWithVars}
                     />
                     <div className="flex justify-between">
                         <span className="text-xs text-zinc-400 tabular-nums">{formatTime(currentTime)}</span>
@@ -140,7 +143,7 @@ export default function AudioPlayer({ src }: Props) {
                                     }}
                                     aria-label="Volume"
                                     className="audio-range audio-range--vertical"
-                                    style={{ ["--fill-percent" as any]: `${volumePercent}%` }}
+                                    style={{ "--fill-percent": `${volumePercent}%` } as CSSPropertiesWithVars}
                                 />
                             </div>
                         )}

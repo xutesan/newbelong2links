@@ -91,8 +91,7 @@ export default function PreviewLinksPage() {
     const isTrackActive = (track: PreviewTrack) => {
         return track.links?.some(link => {
             if (link.revoked) return false
-            if (link.expiresAt && new Date(link.expiresAt) < new Date()) return false
-            return true
+            return !(link.expiresAt && new Date(link.expiresAt) < new Date());
         }) ?? false
     }
 

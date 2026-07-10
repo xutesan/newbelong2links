@@ -9,7 +9,6 @@ interface Props {
     onSuccess: () => void
 }
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB in bytes
 
 export default function UploadTrackPopup({ onSuccess }: Props) {
     const state = useOverlayState({ defaultOpen: false })
