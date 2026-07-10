@@ -101,7 +101,7 @@ export default function PreviewLinksPage() {
 
     return (
         <div>
-            <div className="gap-2">
+            <div className="flex flex-col gap-2">
                 <h1 className="text-4xl font-bold">Preview Links</h1>
                 <p>Upload private preview tracks and generate shareable links.</p>
             </div>
