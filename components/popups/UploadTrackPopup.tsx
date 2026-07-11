@@ -3,7 +3,7 @@
 import { Modal, Button, TextField, Input, Label, useOverlayState } from "@heroui/react"
 import { Icon } from "@iconify/react"
 import { useState } from "react"
-import UploadAudio from "@/components/UploadAudio";
+import UploadAudio from "@/components/functional/uploads/UploadAudio";
 
 interface Props {
     onSuccess: () => void

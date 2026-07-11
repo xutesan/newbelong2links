@@ -3,7 +3,7 @@
 import { Modal, Button, TextField, Input, Switch } from "@heroui/react"
 import { Icon } from "@iconify/react"
 import { DatePicker, DateField, Calendar, Label } from '@heroui/react';
-import UploadArtwork from "@/components/UploadArtwork"
+import UploadArtwork from "@/components/functional/uploads/UploadArtwork"
 import { useState} from "react"
 import { useOverlayState } from "@heroui/react"
 

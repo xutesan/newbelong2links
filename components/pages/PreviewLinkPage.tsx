@@ -4,9 +4,9 @@ import { useEffect, useState, useCallback, useRef } from "react"
 import { Button, Dropdown, Label, Chip, SearchField, Table, Spinner, EmptyState, AlertDialog, Skeleton } from "@heroui/react"
 import { Icon } from "@iconify/react"
 import { useSession } from "next-auth/react"
-import UploadTrackPopup from "@/components/UploadTrackPopup"
-import GenerateLinkPopup from "@/components/GenerateLinkPopup"
-import ViewLinksPopup from "@/components/ViewLinksPopup";
+import UploadTrackPopup from "@/components/popups/UploadTrackPopup"
+import GenerateLinkPopup from "@/components/popups/GenerateLinkPopup"
+import ViewLinksPopup from "@/components/popups/ViewLinksPopup";
 
 interface PreviewLink {
     id: string

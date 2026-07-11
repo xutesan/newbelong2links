@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { Skeleton, SearchField, Button, Dropdown, Label, Table, Chip, EmptyState, AlertDialog } from "@heroui/react"
 import { Icon } from "@iconify/react"
-import AddReleasePopup from "@/components/AddReleasePopup"
-import EditReleasePopup from "@/components/EditReleasePopup"
+import AddReleasePopup from "@/components/popups/AddReleasePopup"
+import EditReleasePopup from "@/components/popups/EditReleasePopup"
 import { useSession } from "next-auth/react"
 
 interface Release {
