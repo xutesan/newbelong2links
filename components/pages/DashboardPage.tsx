@@ -5,9 +5,22 @@ import { Surface, Skeleton } from "@heroui/react"
 import { useSession } from "next-auth/react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts"
 
+interface PreviewLink {
+    id: string
+    revoked: boolean
+    expiresAt: string | null
+}
+
+interface PreviewTrack {
+    id: string
+    links: PreviewLink[]
+}
+
 export default function DashboardPage() {
     const [stats, setStats] = useState<any>(null)
     const [loading, setLoading] = useState(true)
+    const [activePreviewLinks, setActivePreviewLinks] = useState<number | null>(null)
+    const [previewLoading, setPreviewLoading] = useState(true)
     const { data: session } = useSession()
     const isAdmin = session?.user?.role === "admin"
 
@@ -20,14 +33,31 @@ export default function DashboardPage() {
             })
     }, [])
 
+    useEffect(() => {
+        fetch("/api/preview-links/tracks")
+            .then(res => res.json())
+            .then(data => {
+                const tracks: PreviewTrack[] = data.tracks || []
+                const count = tracks.reduce((total, track) => {
+                    const activeLinksForTrack = track.links?.filter(link => {
+                        if (link.revoked) return false
+                        return !(link.expiresAt && new Date(link.expiresAt) < new Date());
+                    }).length || 0
+                    return total + activeLinksForTrack
+                }, 0)
+                setActivePreviewLinks(count)
+                setPreviewLoading(false)
+            })
+    }, [])
+
     return (
         <div className="gap-2">
-            <div>
+            <div className="flex flex-col gap-2">
                 <h1 className="text-4xl font-bold">Dashboard</h1>
                 <p>Overview of releases and activity.</p>
             </div>
 
-            <div className={`grid gap-4 ${isAdmin ? "grid-cols-4 pt-8" : "grid-cols-3 pt-8"}`}>
+            <div className={`grid gap-4 ${isAdmin ? "grid-cols-5 pt-8" : "grid-cols-4 pt-8"}`}>
                 <Surface className="rounded-3xl p-6" variant="default">
                     <div className="flex flex-col gap-1">
                         <p className="text-xs uppercase tracking-widest text-zinc-400">Total Links</p>
@@ -35,6 +65,17 @@ export default function DashboardPage() {
                             <Skeleton className="w-16 h-8 rounded-lg mt-1" />
                         ) : (
                             <p className="text-4xl font-bold">{stats?.totalLinks ?? 0}</p>
+                        )}
+                    </div>
+                </Surface>
+
+                <Surface className="rounded-3xl p-6" variant="default">
+                    <div className="flex flex-col gap-1">
+                        <p className="text-xs uppercase tracking-widest text-zinc-400">Active Preview Links</p>
+                        {previewLoading ? (
+                            <Skeleton className="w-16 h-8 rounded-lg mt-1" />
+                        ) : (
+                            <p className="text-4xl font-bold">{activePreviewLinks ?? 0}</p>
                         )}
                     </div>
                 </Surface>

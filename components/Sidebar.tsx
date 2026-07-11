@@ -11,16 +11,21 @@ const NAV_SECTIONS = [
         label: "OVERVIEW",
         items: [
             { name: "Dashboard", icon: "lucide:layout-dashboard", view: "dashboard" },
-            { name: "Releases", icon: "lucide:link", view: "releases" },
             { name: "Analytics", icon: "lucide:bar-chart-2", view: "analytics", adminOnly: true },
         ]
     },
     {
         label: "WORKSPACE",
         items: [
+            { name: "Releases", icon: "lucide:link", view: "releases" },
             { name: "Preview Links", icon: "lucide:headphones", view: "previewLinks", adminOnly: true },
-            { name: "Access", icon: "lucide:users", view: "access", adminOnly: true },
+        ]
+    },
+    {
+        label: "ADMIN",
+        items: [
             { name: "Settings", icon: "lucide:settings", view: "settings" },
+            { name: "Access", icon: "lucide:users", view: "access", adminOnly: true },
         ]
     }
 ]
