@@ -49,7 +49,7 @@ export async function generateMetadata({
     }
 
     const preview = result.data
-    const title = `${preview.title} — ${preview.artist}`
+    const title = `${preview.title} - ${preview.artist}`
     const description = "A private track preview."
 
     return {
