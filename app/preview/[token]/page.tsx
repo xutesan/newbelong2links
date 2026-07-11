@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import { Card } from "@heroui/react"
+import type { Metadata } from "next"
 import AudioPlayer from "@/components/functional/AudioPlayer"
 import PixelBg from "@/components/functional/PixelBack";
 
@@ -19,6 +20,44 @@ async function getPreview(token: string): Promise<PreviewData | null> {
 
     if (!res.ok) return null
     return res.json()
+}
+
+export async function generateMetadata({
+                                           params,
+                                       }: {
+    params: Promise<{ token: string }>
+}): Promise<Metadata> {
+    const { token } = await params
+    const preview = await getPreview(token)
+
+    if (!preview) {
+        return {
+            title: "Preview not found",
+            description: "This preview link is invalid or has expired.",
+        }
+    }
+
+    const title = `${preview.title} — ${preview.artist}`
+    const description = "A private track preview."
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: "music.song",
+        },
+        twitter: {
+            card: "summary",
+            title,
+            description,
+        },
+        robots: {
+            index: false,
+            follow: false,
+        },
+    }
 }
 
 export default async function PreviewPage({
