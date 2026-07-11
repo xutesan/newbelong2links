@@ -37,7 +37,7 @@ export async function generateMetadata({
         }
     }
 
-    const title = `${preview.title} — ${preview.artist}`
+    const title = `${preview.title} - ${preview.artist}`
     const description = "A private track preview."
 
     return {
@@ -46,12 +46,22 @@ export async function generateMetadata({
         openGraph: {
             title,
             description,
+            siteName: "belong²",
             type: "music.song",
+            images: [
+                {
+                    url: "https://belong2.lon1.digitaloceanspaces.com/b2bg.png",
+                    width: 1200,
+                    height: 630,
+                    alt: "belong²",
+                },
+            ],
         },
         twitter: {
-            card: "summary",
+            card: "summary_large_image",
             title,
             description,
+            images: ["https://belong2.lon1.digitaloceanspaces.com/b2bg.png"],
         },
         robots: {
             index: false,
