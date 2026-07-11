@@ -50,7 +50,7 @@ export async function generateMetadata({
             type: "music.song",
             images: [
                 {
-                    url: "https://belong2.lon1.digitaloceanspaces.com/b2bg.png",
+                    url: "https://belong2.lon1.digitaloceanspaces.com/315156666.png",
                     width: 1200,
                     height: 630,
                     alt: "belong²",
