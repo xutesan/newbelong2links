@@ -34,10 +34,10 @@ export default async function PreviewPage({
     }
 
     return (
-        <div style={{position: "relative", height: "100vh", overflowX: "hidden"}}>
+        <div className="relative min-h-dvh overflow-x-hidden">
             <PixelBg/>
             <div
-                className="min-h-screen flex items-center justify-center px-4 sm:px-6"
+                className="min-h-dvh flex items-center justify-center px-4 py-8 sm:px-6"
                 style={{ backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)" }}
             >
                 <Card className="w-full max-w-md px-4 pb-4 pt-6 sm:px-5 sm:pb-5 sm:pt-8">
