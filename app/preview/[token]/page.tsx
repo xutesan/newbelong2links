@@ -1,9 +1,8 @@
-import { notFound } from "next/navigation"
 import { Card } from "@heroui/react"
+import { Icon } from "@iconify/react"
 import type { Metadata } from "next"
 import AudioPlayer from "@/components/functional/AudioPlayer"
 import PixelBg from "@/components/functional/PixelBack";
-
 
 interface PreviewData {
     title: string
@@ -13,13 +12,25 @@ interface PreviewData {
     recipientName: string | null
 }
 
-async function getPreview(token: string): Promise<PreviewData | null> {
+interface PreviewResult {
+    success: boolean
+    data?: PreviewData
+    status?: number
+    error?: string
+}
+
+async function getPreview(token: string): Promise<PreviewResult> {
     const res = await fetch(`${process.env.RELL_API}/api/previews/link/${token}`, {
         cache: "no-store",
     })
 
-    if (!res.ok) return null
-    return res.json()
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        return { success: false, status: res.status, error: body.error || "Something went wrong" }
+    }
+
+    const data = await res.json()
+    return { success: true, data }
 }
 
 export async function generateMetadata({
@@ -28,16 +39,17 @@ export async function generateMetadata({
     params: Promise<{ token: string }>
 }): Promise<Metadata> {
     const { token } = await params
-    const preview = await getPreview(token)
+    const result = await getPreview(token)
 
-    if (!preview) {
+    if (!result.success || !result.data) {
         return {
             title: "Preview not found",
             description: "This preview link is invalid or has expired.",
         }
     }
 
-    const title = `${preview.title} - ${preview.artist}`
+    const preview = result.data
+    const title = `${preview.title} — ${preview.artist}`
     const description = "A private track preview."
 
     return {
@@ -46,14 +58,14 @@ export async function generateMetadata({
         openGraph: {
             title,
             description,
-            siteName: "belong²",
+            siteName: "belong2",
             type: "music.song",
             images: [
                 {
-                    url: "https://belong2.lon1.digitaloceanspaces.com/315156666.png",
+                    url: "https://belong2.lon1.digitaloceanspaces.com/b2bg.png",
                     width: 1200,
                     height: 630,
-                    alt: "belong²",
+                    alt: "belong2",
                 },
             ],
         },
@@ -76,11 +88,33 @@ export default async function PreviewPage({
     params: Promise<{ token: string }>
 }) {
     const { token } = await params
-    const preview = await getPreview(token)
+    const result = await getPreview(token)
 
-    if (!preview) {
-        notFound()
+    if (!result.success) {
+        return (
+            <div className="relative min-h-dvh overflow-x-hidden">
+                <PixelBg />
+                <div className="min-h-dvh flex items-center justify-center px-4 py-8 sm:px-6">
+                    <Card className="w-full max-w-md px-4 pb-4 pt-6 sm:px-5 sm:pb-5 sm:pt-8 text-center">
+                        <Icon
+                            icon={result.status === 410 ? "lucide:clock-x" : "lucide:link-2-off"}
+                            className="text-4xl text-zinc-300 mx-auto mb-4"
+                        />
+                        <h1 className="text-xl font-bold">
+                            {result.status === 410 ? "This preview is no longer available" : "Preview not found"}
+                        </h1>
+                        <p className="text-zinc-500 text-sm mt-2">
+                            {result.status === 410
+                                ? "This link has expired or been revoked by the sender."
+                                : "This link is invalid. Double check the URL and try again."}
+                        </p>
+                    </Card>
+                </div>
+            </div>
+        )
     }
+
+    const preview = result.data!
 
     return (
         <div className="relative min-h-dvh overflow-x-hidden">
