@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react"
 import { Archivo_Black } from "next/font/google"
 const ArchivoBlack = Archivo_Black({ weight: "400" })
 import { Button } from '@heroui/react'
-
+import { useEffect, useState } from "react"
 
 const NAV_SECTIONS = [
     {
@@ -36,9 +36,38 @@ type Props = {
     releaseCount?: number
 }
 
+interface PreviewLink {
+    revoked: boolean
+    expiresAt: string | null
+}
+
+interface PreviewTrack {
+    links: PreviewLink[]
+}
+
 export default function Sidebar({ activeView, onNavigate, releaseCount = 0 }: Props) {
     const { data: session } = useSession()
     const isAdmin = session?.user?.role === "admin"
+    const [activePreviewLinks, setActivePreviewLinks] = useState(0)
+
+    useEffect(() => {
+        if (!isAdmin) return
+
+        fetch("/api/preview-links/tracks")
+            .then(res => res.json())
+            .then(data => {
+                const tracks: PreviewTrack[] = data.tracks || []
+                const count = tracks.reduce((total, track) => {
+                    const activeLinksForTrack = track.links?.filter(link => {
+                        if (link.revoked) return false
+                        if (link.expiresAt && new Date(link.expiresAt) < new Date()) return false
+                        return true
+                    }).length || 0
+                    return total + activeLinksForTrack
+                }, 0)
+                setActivePreviewLinks(count)
+            })
+    }, [isAdmin])
 
     return (
         <aside className="flex flex-col h-screen w-70 bg-white border-r border-zinc-100 px-5 py-8 shrink-0">
@@ -67,6 +96,7 @@ export default function Sidebar({ activeView, onNavigate, releaseCount = 0 }: Pr
                                 .map(item => {
                                     const isActive = activeView === item.view
                                     const isReleases = item.name === "Releases"
+                                    const isPreviewLinks = item.name === "Preview Links"
                                     return (
                                         <li key={item.name}>
                                             <Button
@@ -87,6 +117,12 @@ export default function Sidebar({ activeView, onNavigate, releaseCount = 0 }: Pr
                                                     <span
                                                         className="text-xs bg-blue-100 text-blue-600 rounded-full px-2 py-0.5 font-medium">
                                                     {releaseCount}
+                                                </span>
+                                                )}
+                                                {isPreviewLinks && (
+                                                    <span
+                                                        className="text-xs bg-blue-100 text-blue-600 rounded-full px-2 py-0.5 font-medium">
+                                                    {activePreviewLinks}
                                                 </span>
                                                 )}
                                             </Button>
