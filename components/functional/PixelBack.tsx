@@ -122,7 +122,7 @@ export default function PixelBg({
             style={{
                 position: "fixed",
                 inset: 0,
-                backgroundColor: "#18181b",
+                backgroundColor: "#f9f9f9",
                 overflow: "hidden",
                 zIndex: -1,
             }}

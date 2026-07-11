@@ -37,16 +37,16 @@ export default async function PreviewPage({
         <div style={{position: "relative", height: "100vh", overflowX: "hidden"}}>
             <PixelBg/>
             <div
-                className="min-h-screen flex items-center justify-center px-4"
+                className="min-h-screen flex items-center justify-center px-4 sm:px-6"
                 style={{ backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)" }}
             >
-                <Card className="w-full max-w-md px-5 pb-5 pt-8">
-                    <h1 className="text-4xl font-bold">{preview.title}</h1>
-                    <p className="text-zinc-500 mb-6 text-2xl">{preview.artist}</p>
+                <Card className="w-full max-w-md px-4 pb-4 pt-6 sm:px-5 sm:pb-5 sm:pt-8">
+                    <h1 className="text-2xl sm:text-4xl font-bold break-words">{preview.title}</h1>
+                    <p className="text-zinc-500 mb-4 sm:mb-6 text-lg sm:text-2xl break-words">{preview.artist}</p>
 
                     <AudioPlayer src={preview.playbackUrl} />
 
-                    <p className="text-xs text-zinc-400 mt-6">
+                    <p className="text-xs text-zinc-400 mt-4 sm:mt-6">
                         This is a private preview link. Please do not share or redistribute.
                     </p>
                 </Card>

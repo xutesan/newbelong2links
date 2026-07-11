@@ -110,7 +110,7 @@ export default function AudioPlayer({ src }: Props) {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <div className="w-6" />
+                    <div className="w-6 hidden sm:block"/>
 
                     <div className="flex-1 flex justify-center">
                         <button
@@ -127,9 +127,10 @@ export default function AudioPlayer({ src }: Props) {
                         </button>
                     </div>
 
-                    <div ref={volumeWrapperRef} className="relative w-6 flex justify-center">
+                    <div ref={volumeWrapperRef} className="relative w-6 hidden sm:flex justify-center">
                         {showVolume && (
-                            <div className="absolute bottom-full mb-3 bg-white rounded-full shadow-lg border border-zinc-100 p-2 flex items-center justify-center">
+                            <div
+                                className="absolute bottom-full mb-3 bg-white rounded-full shadow-lg border border-zinc-100 p-2 flex items-center justify-center">
                                 <input
                                     type="range"
                                     min={0}
@@ -143,7 +144,7 @@ export default function AudioPlayer({ src }: Props) {
                                     }}
                                     aria-label="Volume"
                                     className="audio-range audio-range--vertical"
-                                    style={{ "--fill-percent": `${volumePercent}%` } as CSSPropertiesWithVars}
+                                    style={{"--fill-percent": `${volumePercent}%`} as CSSPropertiesWithVars}
                                 />
                             </div>
                         )}
@@ -153,7 +154,8 @@ export default function AudioPlayer({ src }: Props) {
                             aria-label="Volume"
                             className="text-zinc-400 hover:text-zinc-600 transition-colors shrink-0"
                         >
-                            <Icon icon={isMuted || volume === 0 ? "lucide:volume-x" : "lucide:volume-1"} width={16} height={16} />
+                            <Icon icon={isMuted || volume === 0 ? "lucide:volume-x" : "lucide:volume-1"} width={16}
+                                  height={16}/>
                         </button>
                     </div>
                 </div>
