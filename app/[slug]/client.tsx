@@ -34,7 +34,6 @@ export default function ReleasePage({ params }: { params: Promise<{ slug: string
     if (notFound || !release) {
         return (
             <div className="h-screen w-full bg-black flex flex-col items-center justify-center px-6 text-center">
-                <p className="text-white/40 text-xs uppercase tracking-widest mb-3">belong²</p>
                 <h1 className="text-white text-3xl font-semibold mb-2">Link not found</h1>
                 <p className="text-white/50 text-sm max-w-xs">
                     This release link doesn&apos;t exist. Double check the URL and try again.
