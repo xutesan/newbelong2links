@@ -11,14 +11,37 @@ const ArchivoBlack = Archivo_Black({ weight: "400" })
 export default function ReleasePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params)
     const [release, setRelease] = useState<any>(null)
+    const [notFound, setNotFound] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         fetch(`/api/release/${slug}`)
-            .then(res => res.json())
-            .then(data => setRelease(data))
+            .then(res => {
+                if (!res.ok) {
+                    setNotFound(true)
+                    return null
+                }
+                return res.json()
+            })
+            .then(data => {
+                if (data) setRelease(data)
+                setLoading(false)
+            })
     }, [slug])
 
-    if (!release) return null
+    if (loading) return null
+
+    if (notFound || !release) {
+        return (
+            <div className="h-screen w-full bg-black flex flex-col items-center justify-center px-6 text-center">
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-3">belong²</p>
+                <h1 className="text-white text-3xl font-semibold mb-2">Link not found</h1>
+                <p className="text-white/50 text-sm max-w-xs">
+                    This release link doesn&apos;t exist. Double check the URL and try again.
+                </p>
+            </div>
+        )
+    }
 
     const validLinks = [
         release.spotifyLink,
